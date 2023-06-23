@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +42,38 @@ namespace FRC_Playback
             {
                 events.Add(simpleEvent.Key);
             }
+
         }
+        /*
+        private void MatchInput_TextChanged(object sender, EventArgs e)
+        {
+            results.Clear();
+            SuggestionsList.Clear();
+
+            if (MatchInput.Text.)
+
+                foreach (string eventKey in events)
+                {
+                    if (eventKey.ToLower().Contains(MatchInput.Text.ToLower()))
+                    {
+                        results.Add(eventKey);
+                    }
+                }
+            SuggestionsList.AddItems(results.ToArray<string>());
+        }
+
+        private void SuggestionsButton_Click(object sender, EventArgs e)
+        {
+            SuggestionsList.Clear();
+            SuggestionsList.AddItems(events.ToArray());
+            Debug.WriteLine("Suggested: " + events);
+        }
+
+        private void MatchInput_Enter(object sender, EventArgs e)
+        {
+            SuggestionsList.Visible = true;
+            SuggestionsList.Clear();
+            SuggestionsList.AddItems(events.ToArray());
+        }*/
     }
 }
