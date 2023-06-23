@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FRC Playback", "FRC Playback.csproj", "{16810160-E819-482E-95E6-6A11BA20F9CF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{16810160-E819-482E-95E6-6A11BA20F9CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16810160-E819-482E-95E6-6A11BA20F9CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16810160-E819-482E-95E6-6A11BA20F9CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16810160-E819-482E-95E6-6A11BA20F9CF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {153F6E8B-9C10-4FB0-A7F3-FC07A071C1C9}
+	EndGlobalSection
+EndGlobal
