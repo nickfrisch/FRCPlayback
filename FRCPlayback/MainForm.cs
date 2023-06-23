@@ -47,13 +47,14 @@ namespace FRCPlayback
         {
             results.Clear();
             SuggestionsList.Clear();
-            
+
+            if(MatchInput.Text.)
+
             foreach (string eventKey in events)
             {
                 if (eventKey.ToLower().Contains(MatchInput.Text.ToLower()))
                 {
                     results.Add(eventKey);
-
                 }
             }
             SuggestionsList.AddItems(results.ToArray<string>());
@@ -69,11 +70,13 @@ namespace FRCPlayback
         private void MatchInput_Enter(object sender, EventArgs e)
         {
             SuggestionsList.Visible = true;
+            SuggestionsList.Clear();
+            SuggestionsList.AddItems(events.ToArray());
         }
 
         private void MatchInput_Leave(object sender, EventArgs e)
         {
-            //SuggestionsList.Visible = false;
+
         }
 
         private void FRCPlayback_MouseClick(object sender, MouseEventArgs e)
