@@ -28,20 +28,103 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
+            MatchInput = new MaterialSkin.Controls.MaterialTextBox2();
+            SuggestionsButton = new MaterialSkin.Controls.MaterialButton();
+            SuggestionsList = new MaterialSkin.Controls.MaterialListBox();
+            SuspendLayout();
+            // 
+            // MatchInput
+            // 
+            MatchInput.AnimateReadOnly = false;
+            MatchInput.BackgroundImageLayout = ImageLayout.None;
+            MatchInput.CharacterCasing = CharacterCasing.Normal;
+            MatchInput.Depth = 0;
+            MatchInput.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            MatchInput.HideSelection = true;
+            MatchInput.Hint = "Enter event or team number";
+            MatchInput.LeadingIcon = null;
+            MatchInput.Location = new Point(103, 159);
+            MatchInput.Margin = new Padding(3, 4, 3, 4);
+            MatchInput.MaxLength = 32767;
+            MatchInput.MouseState = MaterialSkin.MouseState.OUT;
+            MatchInput.Name = "MatchInput";
+            MatchInput.PasswordChar = '\0';
+            MatchInput.PrefixSuffixText = null;
+            MatchInput.ReadOnly = false;
+            MatchInput.RightToLeft = RightToLeft.No;
+            MatchInput.SelectedText = "";
+            MatchInput.SelectionLength = 0;
+            MatchInput.SelectionStart = 0;
+            MatchInput.ShortcutsEnabled = true;
+            MatchInput.Size = new Size(286, 48);
+            MatchInput.TabIndex = 0;
+            MatchInput.TabStop = false;
+            MatchInput.TextAlign = HorizontalAlignment.Left;
+            MatchInput.TrailingIcon = null;
+            MatchInput.UseSystemPasswordChar = false;
+            MatchInput.Enter += MatchInput_Enter;
+            MatchInput.Leave += MatchInput_Leave;
+            MatchInput.TextChanged += MatchInput_TextChanged;
+            // 
+            // SuggestionsButton
+            // 
+            SuggestionsButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            SuggestionsButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            SuggestionsButton.Depth = 0;
+            SuggestionsButton.HighEmphasis = true;
+            SuggestionsButton.Icon = null;
+            SuggestionsButton.Location = new Point(679, 159);
+            SuggestionsButton.Margin = new Padding(5, 8, 5, 8);
+            SuggestionsButton.MouseState = MaterialSkin.MouseState.HOVER;
+            SuggestionsButton.Name = "SuggestionsButton";
+            SuggestionsButton.NoAccentTextColor = Color.Empty;
+            SuggestionsButton.Size = new Size(166, 36);
+            SuggestionsButton.TabIndex = 1;
+            SuggestionsButton.Text = "Show Suggestions";
+            SuggestionsButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            SuggestionsButton.UseAccentColor = false;
+            SuggestionsButton.UseVisualStyleBackColor = true;
+            SuggestionsButton.Click += SuggestionsButton_Click;
+            // 
+            // SuggestionsList
+            // 
+            SuggestionsList.BackColor = Color.White;
+            SuggestionsList.BorderColor = Color.LightGray;
+            SuggestionsList.Depth = 0;
+            SuggestionsList.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            SuggestionsList.Location = new Point(395, 159);
+            SuggestionsList.Margin = new Padding(3, 4, 3, 4);
+            SuggestionsList.MouseState = MaterialSkin.MouseState.HOVER;
+            SuggestionsList.Name = "SuggestionsList";
+            SuggestionsList.SelectedIndex = -1;
+            SuggestionsList.SelectedItem = null;
+            SuggestionsList.Size = new Size(300, 200);
+            SuggestionsList.TabIndex = 2;
+            SuggestionsList.Visible = false;
             // 
             // FRCPlayback
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Name = "FRCPlayback";
-            this.Text = "FRC Playback";
-            this.Load += new System.EventHandler(this.MainForm_Load);
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
+            ClientSize = new Size(914, 600);
+            Controls.Add(SuggestionsList);
+            Controls.Add(SuggestionsButton);
+            Controls.Add(MatchInput);
+            Margin = new Padding(3, 4, 3, 4);
+            Name = "FRCPlayback";
+            Padding = new Padding(3, 85, 3, 4);
+            Text = "FRC Playback";
+            Load += MainForm_Load;
+            MouseClick += FRCPlayback_MouseClick;
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private MaterialSkin.Controls.MaterialTextBox2 MatchInput;
+        private MaterialSkin.Controls.MaterialButton SuggestionsButton;
+        private MaterialSkin.Controls.MaterialListBox SuggestionsList;
     }
 }
