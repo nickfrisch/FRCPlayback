@@ -17,6 +17,7 @@
         
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <ProgressBar x:Name="VideoDownloadProgress" HorizontalAlignment="Left" Height="10" Margin="175,113,0,0" VerticalAlignment="Top" Width="100" ValueChanged="ProgressBar_ValueChanged"/>
 
     </Grid>
 </Window>
