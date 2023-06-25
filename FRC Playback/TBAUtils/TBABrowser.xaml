@@ -6,18 +6,18 @@
         xmlns:local="clr-namespace:FRC_Playback.TBAUtils"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="FRC_Playback.TBAUtils.TBABrowser"
         mc:Ignorable="d"
-        Title="TBABrowser" Height="450" Width="800">
+        Title="TBABrowser" Height="481" Width="893">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="799*"/>
         </Grid.ColumnDefinitions>
-        <TreeView x:Name="TBATreeView" Margin="9,52,524,10" BorderThickness="2,2,2,2" BorderBrush="Gray" Grid.Column="1"/>
-        <ComboBox x:Name="TBASearchBar" HorizontalAlignment="Left" Margin="9,10,0,0" VerticalAlignment="Top" Width="266" Height="30" IsEditable="True" Grid.Column="1"/>
+        <TreeView x:Name="TBATreeView" Margin="9,52,462,38" BorderThickness="2,2,2,2" BorderBrush="Gray" Grid.Column="1"/>
+        <ComboBox x:Name="TBASearchBar" HorizontalAlignment="Left" Margin="9,10,0,0" VerticalAlignment="Top" Width="421" Height="30" IsEditable="True" Grid.Column="1"/>
 
-        <Rectangle HorizontalAlignment="Left" Height="23" Margin="290,8,0,8" Stroke="Black" VerticalAlignment="Top" Width="210" Fill="#7FFF1919" Grid.Column="1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="296,12,0,0" TextWrapping="Wrap" Text="Red Alliance" VerticalAlignment="Top" RenderTransformOrigin="0.579,0.55" Grid.Column="1"/>
-        <Grid HorizontalAlignment="Left" Height="350" Margin="289,8,0,0" VerticalAlignment="Center" Width="210" Grid.Column="1">
+        <Rectangle HorizontalAlignment="Left" Height="23" Margin="450,12,0,0" Stroke="Black" VerticalAlignment="Top" Width="210" Fill="#7FFF1919" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="456,16,0,0" TextWrapping="Wrap" Text="Red Alliance" VerticalAlignment="Top" RenderTransformOrigin="0.579,0.55" Grid.Column="1"/>
+        <Grid HorizontalAlignment="Left" Height="350" Margin="449,50,0,0" VerticalAlignment="Top" Width="210" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="8*"/>
                 <ColumnDefinition Width="8*"/>
@@ -37,9 +37,9 @@
             <TextBox x:Name="RedAllianceTeam3Number" Grid.Column="2" HorizontalAlignment="Center" Margin="0,17,0,0" TextWrapping="Wrap" Text="Team #" VerticalAlignment="Top" Width="56" TextAlignment="Center" Height="25"/>
         </Grid>
 
-        <Rectangle HorizontalAlignment="Left" Height="23" Margin="512,8,0,8" Stroke="Black" VerticalAlignment="Top" Width="210" Fill="#7F1932FF" Grid.Column="1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="518,12,0,0" TextWrapping="Wrap" Text="Blue Alliance" VerticalAlignment="Top" RenderTransformOrigin="0.579,0.55" Grid.Column="1"/>
-        <Grid HorizontalAlignment="Left" Height="350" Margin="510,8,0,0" VerticalAlignment="Center" Width="210" Grid.Column="1">
+        <Rectangle HorizontalAlignment="Left" Height="23" Margin="672,12,0,0" Stroke="Black" VerticalAlignment="Top" Width="210" Fill="#7F1932FF" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="678,16,0,0" TextWrapping="Wrap" Text="Blue Alliance" VerticalAlignment="Top" RenderTransformOrigin="0.579,0.55" Grid.Column="1"/>
+        <Grid HorizontalAlignment="Left" Height="350" Margin="670,50,0,0" VerticalAlignment="Top" Width="210" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="8*"/>
                 <ColumnDefinition Width="8*"/>
@@ -58,7 +58,7 @@
             <TextBlock Grid.Column="2" HorizontalAlignment="Center" Margin="0,2,0,0" TextWrapping="Wrap" Text="Team 3" VerticalAlignment="Top" Height="16" Width="38"/>
             <TextBox x:Name="BlueAllianceTeam3Number" Grid.Column="2" HorizontalAlignment="Center" Margin="0,17,0,0" TextWrapping="Wrap" Text="Team #" VerticalAlignment="Top" Width="56" TextAlignment="Center" Height="25"/>
         </Grid>
-        <TextBox x:Name="CachePath" Grid.Column="1" HorizontalAlignment="Left" Margin="346,399,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="443" RenderTransformOrigin="0.923,0.575" IsEnabled="False"/>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="280,404,0,0" TextWrapping="Wrap" Text="Cache Path:" VerticalAlignment="Top"/>
+        <Button x:Name="TBABrowserOKButton" Grid.Column="1" Content="OK" HorizontalAlignment="Left" Margin="704,405,0,2" Width="83" Click="TBABrowserOKButton_Click"/>
+        <Button x:Name="TBABrowserCancelButton" Grid.Column="1" Content="CANCEL" HorizontalAlignment="Left" Margin="794,405,0,2" Width="83"/>
     </Grid>
 </Window>
