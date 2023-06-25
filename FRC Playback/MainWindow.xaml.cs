@@ -59,33 +59,6 @@ namespace FRC_Playback
             });
             await youtube.Videos.Streams.DownloadAsync(streamInfo, videoFullPath, progress);
 
-            
-            /*
-            var client = new HttpClient();
-            long? totalByte = 0;
-            using (Stream output = File.OpenWrite(videoFullPath))
-            {
-                Debug.WriteLine("File: " + videoFullPath);
-                using (var request = new HttpRequestMessage(HttpMethod.Head, videoURL))
-                {
-                    totalByte = client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).Result.Content.Headers.ContentLength;
-
-                }
-                using (var input = await client.GetStreamAsync(videoURL))
-                {
-                    byte[] buffer = new byte[16 * 1024];
-                    int read;
-                    int totalRead = 0;
-                    Debug.WriteLine("Download Started");
-                    while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-                    {
-                        output.Write(buffer, 0, read);
-                        totalRead += read;
-                        Debug.Write($"\rDownloading " + (double)totalRead/(double)totalByte +  "%...");
-                    }
-                    Debug.WriteLine("Download Complete");
-                }
-            }*/
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
