@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FRC_Playback.TBAUtils;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -31,10 +32,6 @@ namespace FRC_Playback
     /// </summary>
     public partial class MainWindow : Window
     {
-        Collection<string> results = new Collection<string>();
-
-        Collection<string> events = new Collection<string>();
-
         public MainWindow()
         {
             InitializeComponent();
@@ -70,6 +67,16 @@ namespace FRC_Playback
             Match match = apiInstance.GetMatch("2023mijac_qm50");
 
             DownloadVideo(string.Format("https://www.youtube.com/watch?v={0}", match.Videos[0].Key));
+        }
+        }
+
+        private void BrowseButton_Click(object sender, RoutedEventArgs e)
+        {
+            TBABrowser bro = new TBABrowser((stringList) =>
+            {
+                MessageBox.Show(stringList[0]);
+            });
+            bro.Show();
         }
     }
 }
