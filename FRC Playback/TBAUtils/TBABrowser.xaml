@@ -59,6 +59,7 @@
             <TextBox x:Name="BlueAllianceTeam3Number" Grid.Column="2" HorizontalAlignment="Center" Margin="0,17,0,0" TextWrapping="Wrap" Text="Team #" VerticalAlignment="Top" Width="56" TextAlignment="Center" Height="25"/>
         </Grid>
         <Button x:Name="TBABrowserOKButton" Grid.Column="1" Content="OK" HorizontalAlignment="Left" Margin="704,405,0,2" Width="83" Click="TBABrowserOKButton_Click"/>
-        <Button x:Name="TBABrowserCancelButton" Grid.Column="1" Content="CANCEL" HorizontalAlignment="Left" Margin="794,405,0,2" Width="83"/>
+        <Button x:Name="TBABrowserCancelButton" Grid.Column="1" Content="CANCEL" HorizontalAlignment="Left" Margin="794,405,0,2" Width="83" Click="TBABrowserCancelButton_Click"/>
+        <Button Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Erase Cache" Margin="10,432,792,13" Width="90" Height="20" FontSize="10" Click="Button_Click"/>
     </Grid>
 </Window>

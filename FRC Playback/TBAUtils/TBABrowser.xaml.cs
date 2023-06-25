@@ -18,6 +18,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TBAAPI.V3Client.Api;
 using TBAAPI.V3Client.Client;
@@ -32,6 +33,8 @@ namespace FRC_Playback.TBAUtils
     {
         Collection<string> events = new Collection<string>();
 
+        Action<List<string>> callback;
+
         TBACache tbaData;
         string tbaDataCachePath;
 
@@ -42,9 +45,11 @@ namespace FRC_Playback.TBAUtils
         {
             string header;
             string key;
+            int id; // 0 Year, 1 District, 2 Events, 3 Match
 
-            public TreeHeaderObj(string header, string key)
+            public TreeHeaderObj(int id, string header, string key)
             {
+                this.id = id;
                 this.header = header;
                 this.key = key;
             }
@@ -58,11 +63,18 @@ namespace FRC_Playback.TBAUtils
             {
                 return this.key;
             }
+
+            public int GetId()
+            {
+                return this.id;
+            }
         }
 
-        public TBABrowser()
+        public TBABrowser(Action<List<string>> callback)
         {
             InitializeComponent();
+
+            this.callback = callback;
 
             //////////////////////Blue Alliance Client Setup//////////////////////
 
@@ -101,9 +113,10 @@ namespace FRC_Playback.TBAUtils
             foreach (YearCache year in tbaData.years)
             {
                 TreeViewItem yearItem = new TreeViewItem();
-                yearItem.Header = year.year.ToString();
+                yearItem.Header = new TreeHeaderObj(0, year.year.ToString(), year.year.ToString());
                 yearItem.AllowDrop = true;
-                yearItem.Expanded += new RoutedEventHandler((sender, args) => {
+                yearItem.Expanded += new RoutedEventHandler((sender, args) =>
+                {
                     if (sender == TBATreeView.SelectedItem)
                         onYearItemSelected(year, yearItem);
                 });
@@ -125,7 +138,7 @@ namespace FRC_Playback.TBAUtils
             foreach (DistrictCache district in year.districts)
             {
                 TreeViewItem districtItem = new TreeViewItem();
-                districtItem.Header = new TreeHeaderObj(district.districtName, district.districtKey);
+                districtItem.Header = new TreeHeaderObj(1, district.districtName, district.districtKey);
                 districtItem.AllowDrop = true;
                 districtItem.Expanded += new RoutedEventHandler((sender, args) => {
                     if (sender == TBATreeView.SelectedItem)
@@ -151,7 +164,7 @@ namespace FRC_Playback.TBAUtils
             foreach (EventCache eventSimple in district.events)
             {
                 TreeViewItem eventItem = new TreeViewItem();
-                eventItem.Header = new TreeHeaderObj(eventSimple.eventName, eventSimple.eventKey);
+                eventItem.Header = new TreeHeaderObj(2, eventSimple.eventName, eventSimple.eventKey);
                 eventItem.AllowDrop = true;
                 eventItem.Expanded += new RoutedEventHandler((sender, args) =>
                 {
@@ -176,7 +189,7 @@ namespace FRC_Playback.TBAUtils
             foreach (MatchCache match in eventSimple.matchCaches)
             {
                 TreeViewItem matchItem = new TreeViewItem();
-                matchItem.Header = new TreeHeaderObj(match.matchKey, match.matchKey);
+                matchItem.Header = new TreeHeaderObj(3, match.matchKey, match.matchKey);
                 matchItem.AllowDrop = true;
                 matchItem.Selected += new RoutedEventHandler((sender, args) => {
                     if (sender == TBATreeView.SelectedItem)
@@ -361,12 +374,39 @@ namespace FRC_Playback.TBAUtils
 
         private void TBABrowserOKButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            TreeHeaderObj selected = ((TreeHeaderObj) ((TreeViewItem) TBATreeView.SelectedItem).Header);
+            List<string> returner = new List<string>();
+
+            if (selected.GetId() == 2)
+            {
+                List<MatchSimple> matches = eventAPIInstance.GetEventMatchesSimple(selected.GetKey());
+
+                foreach (MatchSimple match in matches)
+                {
+                    returner.Add(match.Key.ToString());
+                }
+
+            }
+            else if (selected.GetId() == 3)
+            {
+                returner.Add(selected.GetKey());
+            }
+
+            this.callback.Invoke(returner);
+
+            this.Close();
         }
 
-        public string waitForResult()
+        private void TBABrowserCancelButton_Click(object sender, RoutedEventArgs e)
         {
-            return ((TreeHeaderObj) TBATreeView.SelectedItem).GetKey();
+            this.Close();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            File.Delete(tbaDataCachePath);
+
+            buildBasicCache(false);
         }
     }
 }

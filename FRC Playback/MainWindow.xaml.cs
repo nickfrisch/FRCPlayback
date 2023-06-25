@@ -34,7 +34,10 @@ namespace FRC_Playback
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
         {
-            TBABrowser bro = new TBABrowser();
+            TBABrowser bro = new TBABrowser((stringList) =>
+            {
+                MessageBox.Show(stringList[0]);
+            });
             bro.Show();
         }
     }
