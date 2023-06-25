@@ -1,0 +1,64 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FRC_Playback.TBAUtils"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="FRC_Playback.TBAUtils.TBABrowser"
+        mc:Ignorable="d"
+        Title="TBABrowser" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="799*"/>
+        </Grid.ColumnDefinitions>
+        <TreeView x:Name="TBATreeView" Margin="9,52,524,10" BorderThickness="2,2,2,2" BorderBrush="Gray" Grid.Column="1"/>
+        <ComboBox x:Name="TBASearchBar" HorizontalAlignment="Left" Margin="9,10,0,0" VerticalAlignment="Top" Width="266" Height="30" IsEditable="True" Grid.Column="1"/>
+
+        <Rectangle HorizontalAlignment="Left" Height="23" Margin="290,8,0,8" Stroke="Black" VerticalAlignment="Top" Width="210" Fill="#7FFF1919" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="296,12,0,0" TextWrapping="Wrap" Text="Red Alliance" VerticalAlignment="Top" RenderTransformOrigin="0.579,0.55" Grid.Column="1"/>
+        <Grid HorizontalAlignment="Left" Height="350" Margin="289,8,0,0" VerticalAlignment="Center" Width="210" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="8*"/>
+            </Grid.ColumnDefinitions>
+
+            <Rectangle HorizontalAlignment="Center" Height="45" Margin="0,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="60"/>
+            <TextBlock HorizontalAlignment="Center" Margin="0,2,0,0" TextWrapping="Wrap" Text="Team 1" VerticalAlignment="Top" Height="16" Width="38"/>
+            <TextBox x:Name="RedAllianceTeam1Number" HorizontalAlignment="Center" Margin="0,17,0,0" TextWrapping="Wrap" Text="Team #" VerticalAlignment="Top" Width="56" TextAlignment="Center" Height="25"/>
+
+            <Rectangle Grid.Column="1" HorizontalAlignment="Center" Height="45" Margin="0,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="60"/>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Center" Margin="0,2,0,0" TextWrapping="Wrap" Text="Team 2" VerticalAlignment="Top" Height="16" Width="38"/>
+            <TextBox x:Name="RedAllianceTeam2Number" Grid.Column="1" HorizontalAlignment="Center" Margin="0,17,0,0" TextWrapping="Wrap" Text="Team #" VerticalAlignment="Top" Width="56" TextAlignment="Center" Height="25"/>
+
+            <Rectangle Grid.Column="2" HorizontalAlignment="Center" Height="45" Margin="0,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="60"/>
+            <TextBlock Grid.Column="2" HorizontalAlignment="Center" Margin="0,2,0,0" TextWrapping="Wrap" Text="Team 3" VerticalAlignment="Top" Height="16" Width="38"/>
+            <TextBox x:Name="RedAllianceTeam3Number" Grid.Column="2" HorizontalAlignment="Center" Margin="0,17,0,0" TextWrapping="Wrap" Text="Team #" VerticalAlignment="Top" Width="56" TextAlignment="Center" Height="25"/>
+        </Grid>
+
+        <Rectangle HorizontalAlignment="Left" Height="23" Margin="512,8,0,8" Stroke="Black" VerticalAlignment="Top" Width="210" Fill="#7F1932FF" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="518,12,0,0" TextWrapping="Wrap" Text="Blue Alliance" VerticalAlignment="Top" RenderTransformOrigin="0.579,0.55" Grid.Column="1"/>
+        <Grid HorizontalAlignment="Left" Height="350" Margin="510,8,0,0" VerticalAlignment="Center" Width="210" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="8*"/>
+            </Grid.ColumnDefinitions>
+
+            <Rectangle HorizontalAlignment="Center" Height="45" Margin="0,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="60"/>
+            <TextBlock HorizontalAlignment="Center" Margin="0,2,0,0" TextWrapping="Wrap" Text="Team 1" VerticalAlignment="Top" Height="16" Width="38"/>
+            <TextBox x:Name="BlueAllianceTeam1Number" HorizontalAlignment="Center" Margin="0,17,0,0" TextWrapping="Wrap" Text="Team #" VerticalAlignment="Top" Width="56" TextAlignment="Center" Height="25"/>
+
+            <Rectangle Grid.Column="1" HorizontalAlignment="Center" Height="45" Margin="0,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="60"/>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Center" Margin="0,2,0,0" TextWrapping="Wrap" Text="Team 2" VerticalAlignment="Top" Height="16" Width="38"/>
+            <TextBox x:Name="BlueAllianceTeam2Number" Grid.Column="1" HorizontalAlignment="Center" Margin="0,17,0,0" TextWrapping="Wrap" Text="Team #" VerticalAlignment="Top" Width="56" TextAlignment="Center" Height="25"/>
+
+            <Rectangle Grid.Column="2" HorizontalAlignment="Center" Height="45" Margin="0,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="60"/>
+            <TextBlock Grid.Column="2" HorizontalAlignment="Center" Margin="0,2,0,0" TextWrapping="Wrap" Text="Team 3" VerticalAlignment="Top" Height="16" Width="38"/>
+            <TextBox x:Name="BlueAllianceTeam3Number" Grid.Column="2" HorizontalAlignment="Center" Margin="0,17,0,0" TextWrapping="Wrap" Text="Team #" VerticalAlignment="Top" Width="56" TextAlignment="Center" Height="25"/>
+        </Grid>
+        <TextBox x:Name="CachePath" Grid.Column="1" HorizontalAlignment="Left" Margin="346,399,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="443" RenderTransformOrigin="0.923,0.575" IsEnabled="False"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="280,404,0,0" TextWrapping="Wrap" Text="Cache Path:" VerticalAlignment="Top"/>
+    </Grid>
+</Window>
