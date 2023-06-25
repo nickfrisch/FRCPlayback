@@ -17,7 +17,8 @@
         
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ProgressBar x:Name="VideoDownloadProgress" HorizontalAlignment="Left" Height="10" Margin="175,113,0,0" VerticalAlignment="Top" Width="100" ValueChanged="ProgressBar_ValueChanged"/>
+        <ProgressBar x:Name="VideoDownloadProgress" HorizontalAlignment="Left" Height="10" Margin="175,113,0,0" VerticalAlignment="Top" Width="100" ValueChanged="ProgressBar_ValueChanged" Maximum="1"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="383,191,0,0" VerticalAlignment="Top" Click="Button_Click"/>
 
     </Grid>
 </Window>
