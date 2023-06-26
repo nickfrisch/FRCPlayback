@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using System;
@@ -71,7 +71,7 @@ namespace FRC_Playback.TBAUtils
             }
         }
 
-        public TBABrowser(Action<List<string>> callback)
+        public TBABrowser(Action<List<string>> callback, EventApi eventApi, DistrictApi districtApi)
         {
             InitializeComponent();
 
@@ -79,12 +79,8 @@ namespace FRC_Playback.TBAUtils
 
             //////////////////////Blue Alliance Client Setup//////////////////////
 
-            Configuration.Default.BasePath = "https://www.thebluealliance.com/api/v3";
-            Configuration.Default.ApiKey.Add("X-TBA-Auth-Key", "Ow8SODFIWtXsxk9KbI0tDPooPibzYcyzhSiJ9saUWQXGIf5ENQ8pwnb1Bi2gwxhj");
-
-            eventAPIInstance = new EventApi(Configuration.Default);
-            districtAPIInstance = new DistrictApi(Configuration.Default);
-            matchAPIInstance = new MatchApi(Configuration.Default);
+            eventAPIInstance = eventApi;
+            districtAPIInstance = districtApi;
 
             //////////////////////TBA Cache Reader//////////////////////
 
@@ -153,8 +149,6 @@ namespace FRC_Playback.TBAUtils
 
         void onDistrictItemSelected(YearCache year, DistrictCache district, TreeViewItem districtItem)
         {
-            //MessageBox.Show("Selected Item " + TBATreeView.SelectedItem.ToString());
-            //MessageBox.Show("District Item Selected");
             if (isRewriteRequired(district.lastUpdateTime, year.year, district.events.Count))
             {
                 buildBasicEventCache(year.year, district.districtKey, district.districtName);
