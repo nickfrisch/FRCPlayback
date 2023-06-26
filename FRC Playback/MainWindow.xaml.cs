@@ -55,7 +55,19 @@ namespace FRC_Playback
                 VideoDownloadProgress.Value = percent;
             });
             await youtube.Videos.Streams.DownloadAsync(streamInfo, videoFullPath, progress);
+
             MessageBox.Show("Finished downloading match video!");
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Configuration.Default.BasePath = "https://www.thebluealliance.com/api/v3";
+            Configuration.Default.ApiKey.Add("X-TBA-Auth-Key", "Ow8SODFIWtXsxk9KbI0tDPooPibzYcyzhSiJ9saUWQXGIf5ENQ8pwnb1Bi2gwxhj");
+
+            var apiInstance = new MatchApi(Configuration.Default);
+            Match match = apiInstance.GetMatch("2023mijac_qm50");
+
+            DownloadVideo(string.Format("https://www.youtube.com/watch?v={0}", match.Videos[0].Key));
         }
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
