@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,16 +33,15 @@ namespace FRC_Playback
     /// </summary>
     public partial class MainWindow : Window
     {
+        MatchApi matchApiInstance = new MatchApi(Configuration.Default);
         public MainWindow()
         {
             InitializeComponent();
         }
-        private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private async void DownloadVideo(string videoKey)
         {
+            string videoURL = string.Format("https://www.youtube.com/watch?v={0}", videoKey);
 
-        }
-        private async void DownloadVideo(string videoURL)
-        {
             var youtube = new YoutubeClient();
             var streamManifest = await youtube.Videos.Streams.GetManifestAsync(videoURL);
             var streamInfo = streamManifest.GetMuxedStreams().GetWithHighestVideoQuality();
@@ -56,6 +56,7 @@ namespace FRC_Playback
             });
             await youtube.Videos.Streams.DownloadAsync(streamInfo, videoFullPath, progress);
 
+            MessageBox.Show("Finished downloading match video!");
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -74,6 +75,7 @@ namespace FRC_Playback
             TBABrowser bro = new TBABrowser((stringList) =>
             {
                 MessageBox.Show(stringList[0]);
+                DownloadVideo(matchApiInstance.GetMatch(stringList[0]).Videos[0].Key);
             });
             bro.Show();
         }

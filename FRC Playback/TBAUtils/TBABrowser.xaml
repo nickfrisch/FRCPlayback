@@ -17,7 +17,7 @@
 
         <Rectangle HorizontalAlignment="Left" Height="23" Margin="450,12,0,0" Stroke="Black" VerticalAlignment="Top" Width="210" Fill="#7FFF1919" Grid.Column="1"/>
         <TextBlock HorizontalAlignment="Left" Margin="456,16,0,0" TextWrapping="Wrap" Text="Red Alliance" VerticalAlignment="Top" RenderTransformOrigin="0.579,0.55" Grid.Column="1"/>
-        <Grid HorizontalAlignment="Left" Height="350" Margin="449,50,0,0" VerticalAlignment="Top" Width="210" Grid.Column="1">
+        <Grid HorizontalAlignment="Left" Height="125" Margin="449,50,0,0" VerticalAlignment="Top" Width="210" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="8*"/>
                 <ColumnDefinition Width="8*"/>
@@ -39,7 +39,7 @@
 
         <Rectangle HorizontalAlignment="Left" Height="23" Margin="672,12,0,0" Stroke="Black" VerticalAlignment="Top" Width="210" Fill="#7F1932FF" Grid.Column="1"/>
         <TextBlock HorizontalAlignment="Left" Margin="678,16,0,0" TextWrapping="Wrap" Text="Blue Alliance" VerticalAlignment="Top" RenderTransformOrigin="0.579,0.55" Grid.Column="1"/>
-        <Grid HorizontalAlignment="Left" Height="350" Margin="670,50,0,0" VerticalAlignment="Top" Width="210" Grid.Column="1">
+        <Grid HorizontalAlignment="Left" Height="125" Margin="670,50,0,0" VerticalAlignment="Top" Width="210" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="8*"/>
                 <ColumnDefinition Width="8*"/>
@@ -61,5 +61,15 @@
         <Button x:Name="TBABrowserOKButton" Grid.Column="1" Content="OK" HorizontalAlignment="Left" Margin="704,405,0,2" Width="83" Click="TBABrowserOKButton_Click"/>
         <Button x:Name="TBABrowserCancelButton" Grid.Column="1" Content="CANCEL" HorizontalAlignment="Left" Margin="794,405,0,2" Width="83" Click="TBABrowserCancelButton_Click"/>
         <Button Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Erase Cache" Margin="10,432,792,13" Width="90" Height="20" FontSize="10" Click="Button_Click"/>
+        <WebBrowser x:Name="VideoPreview" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Margin="354,175,118,52" Width="420" Height="236.25">
+            <WebBrowser.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform X="100"/>
+                </TransformGroup>
+            </WebBrowser.RenderTransform>
+        </WebBrowser>
     </Grid>
 </Window>
