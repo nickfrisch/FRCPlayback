@@ -374,6 +374,12 @@ namespace FRC_Playback.TBAUtils
 
         private void TBABrowserOKButton_Click(object sender, RoutedEventArgs e)
         {
+            if(TBATreeView.SelectedItem == null)
+            {
+                this.Close();
+                return;
+            }
+
             TreeHeaderObj selected = ((TreeHeaderObj) ((TreeViewItem) TBATreeView.SelectedItem).Header);
             List<string> returner = new List<string>();
 
