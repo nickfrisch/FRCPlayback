@@ -40,6 +40,7 @@ namespace FRC_Playback.TBAUtils
 
         EventApi eventAPIInstance;
         DistrictApi districtAPIInstance;
+        MatchApi matchAPIInstance;
 
         private class TreeHeaderObj
         {
@@ -83,6 +84,7 @@ namespace FRC_Playback.TBAUtils
 
             eventAPIInstance = new EventApi(Configuration.Default);
             districtAPIInstance = new DistrictApi(Configuration.Default);
+            matchAPIInstance = new MatchApi(Configuration.Default);
 
             //////////////////////TBA Cache Reader//////////////////////
 
@@ -209,6 +211,15 @@ namespace FRC_Playback.TBAUtils
             RedAllianceTeam1Number.Text = match.red1;
             RedAllianceTeam2Number.Text = match.red2;
             RedAllianceTeam3Number.Text = match.red3;
+            var embed = "<html><head>" +
+                        "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"/>" +
+                        "</head><body>" +
+                        "<iframe width=\"368\" height=\"207\" src=\"{0}\"" +
+                        "frameborder = \"0\" allow = \"autoplay; encrypted-media\" allowfullscreen></iframe>" +
+                        "</body></html>";
+            var url = "https://www.youtube.com/embed/" + matchAPIInstance.GetMatch(match.matchKey).Videos[0].Key;
+            string previewHtml = string.Format(embed, url);
+            VideoPreview.NavigateToString(previewHtml);
         }
 
         void buildBasicCache(bool forceAllUpdate)
