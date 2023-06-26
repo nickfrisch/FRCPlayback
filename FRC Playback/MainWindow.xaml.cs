@@ -68,7 +68,6 @@ namespace FRC_Playback
 
             DownloadVideo(string.Format("https://www.youtube.com/watch?v={0}", match.Videos[0].Key));
         }
-        }
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
         {
