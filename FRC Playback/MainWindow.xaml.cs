@@ -32,14 +32,23 @@ namespace FRC_Playback
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        MatchApi matchAPIInstance;
+        EventApi eventAPIInstance;
+        DistrictApi districtAPIInstance;
+
         public MainWindow()
         {
             InitializeComponent();
-        }
-        private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
 
+            Configuration.Default.BasePath = "https://www.thebluealliance.com/api/v3";
+            Configuration.Default.ApiKey.Add("X-TBA-Auth-Key", "Ow8SODFIWtXsxk9KbI0tDPooPibzYcyzhSiJ9saUWQXGIf5ENQ8pwnb1Bi2gwxhj");
+
+            matchAPIInstance = new MatchApi(Configuration.Default);
+            eventAPIInstance = new EventApi(Configuration.Default);
+            districtAPIInstance = new DistrictApi(Configuration.Default);
         }
+
         private async void DownloadVideo(string videoURL)
         {
             var youtube = new YoutubeClient();
@@ -48,34 +57,30 @@ namespace FRC_Playback
 
             var stream = await youtube.Videos.Streams.GetAsync(streamInfo);
 
-            string videoFullPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\..\\" + "videos", $"video.{streamInfo.Container}");
+            string videoFullPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"FRCPlayback_video.{streamInfo.Container}");
 
             IProgress<double> progress = new Progress<double>(percent =>
             {
                 VideoDownloadProgress.Value = percent;
             });
             await youtube.Videos.Streams.DownloadAsync(streamInfo, videoFullPath, progress);
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Configuration.Default.BasePath = "https://www.thebluealliance.com/api/v3";
-            Configuration.Default.ApiKey.Add("X-TBA-Auth-Key", "Ow8SODFIWtXsxk9KbI0tDPooPibzYcyzhSiJ9saUWQXGIf5ENQ8pwnb1Bi2gwxhj");
-
-            var apiInstance = new MatchApi(Configuration.Default);
-            Match match = apiInstance.GetMatch("2023mijac_qm50");
-
-            DownloadVideo(string.Format("https://www.youtube.com/watch?v={0}", match.Videos[0].Key));
         }
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
         {
             TBABrowser bro = new TBABrowser((stringList) =>
             {
-                MessageBox.Show(stringList[0]);
-            });
+                MatchKeyInput.Text = stringList[0];
+            }, eventAPIInstance, districtAPIInstance);
+
             bro.Show();
+        }
+
+        private void DownloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            Match match = matchAPIInstance.GetMatch(MatchKeyInput.Text);
+
+            DownloadVideo(string.Format("https://www.youtube.com/watch?v={0}", match.Videos[0].Key));
         }
     }
 }
