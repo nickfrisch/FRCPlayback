@@ -55,7 +55,7 @@ namespace FRC_Playback
             TBABrowser bro = new TBABrowser((stringList) =>
             {
                 MatchKeyInput.Text = stringList[0];
-            }, eventAPIInstance, districtAPIInstance);
+            }, eventAPIInstance, districtAPIInstance, matchAPIInstance);
 
             bro.Show();
         }

@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:FRC_Playback.TBAUtils"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="FRC_Playback.TBAUtils.TBABrowser"
         mc:Ignorable="d"
-        Title="TBABrowser" Height="481" Width="893">
+        Title="TBABrowser" ResizeMode="NoResize" Height="503" Width="908">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="799*"/>
         </Grid.ColumnDefinitions>
-        <TreeView x:Name="TBATreeView" Margin="9,52,462,38" BorderThickness="2,2,2,2" BorderBrush="Gray" Grid.Column="1"/>
+        <TreeView x:Name="TBATreeView" Margin="9,52,462,38" Width="420" BorderThickness="2,2,2,2" BorderBrush="Gray" Grid.Column="1" HorizontalAlignment="Left"/>
         <ComboBox x:Name="TBASearchBar" HorizontalAlignment="Left" Margin="9,10,0,0" VerticalAlignment="Top" Width="421" Height="30" IsEditable="True" Grid.Column="1"/>
 
         <Rectangle HorizontalAlignment="Left" Height="23" Margin="450,12,0,0" Stroke="Black" VerticalAlignment="Top" Width="210" Fill="#7FFF1919" Grid.Column="1"/>
@@ -58,16 +58,16 @@
             <TextBlock Grid.Column="2" HorizontalAlignment="Center" Margin="0,2,0,0" TextWrapping="Wrap" Text="Team 3" VerticalAlignment="Top" Height="16" Width="38"/>
             <TextBox x:Name="BlueAllianceTeam3Number" Grid.Column="2" HorizontalAlignment="Center" Margin="0,17,0,0" TextWrapping="Wrap" Text="Team #" VerticalAlignment="Top" Width="56" TextAlignment="Center" Height="25"/>
         </Grid>
-        <Button x:Name="TBABrowserOKButton" Grid.Column="1" Content="OK" HorizontalAlignment="Left" Margin="704,405,0,2" Width="83" Click="TBABrowserOKButton_Click"/>
-        <Button x:Name="TBABrowserCancelButton" Grid.Column="1" Content="CANCEL" HorizontalAlignment="Left" Margin="794,405,0,2" Width="83" Click="TBABrowserCancelButton_Click"/>
-        <Button Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Erase Cache" Margin="10,432,792,13" Width="90" Height="20" FontSize="10" Click="Button_Click"/>
-        <WebBrowser x:Name="VideoPreview" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Margin="354,175,118,52" Width="420" Height="236.25">
+        <Button x:Name="TBABrowserOKButton" Grid.Column="1" Content="OK" HorizontalAlignment="Right" Margin="0,423,98,10" Width="83" Click="TBABrowserOKButton_Click" VerticalAlignment="Bottom" Panel.ZIndex="1"/>
+        <Button x:Name="TBABrowserCancelButton" Grid.Column="1" Content="CANCEL" HorizontalAlignment="Right" Margin="0,423,10,10" Width="83" Click="TBABrowserCancelButton_Click" VerticalAlignment="Bottom" Panel.ZIndex="1"/>
+        <Button Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Erase Cache" Margin="10,432,792,13" Width="90" Height="20" FontSize="10" Click="Button_Click" Panel.ZIndex="1"/>
+        <WebBrowser x:Name="VideoPreview" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Margin="0,0,25,71" Width="420" Height="236" HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <WebBrowser.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform/>
                     <RotateTransform/>
-                    <TranslateTransform X="100"/>
+                    <TranslateTransform/>
                 </TransformGroup>
             </WebBrowser.RenderTransform>
         </WebBrowser>

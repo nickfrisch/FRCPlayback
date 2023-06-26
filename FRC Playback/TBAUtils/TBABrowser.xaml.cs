@@ -71,7 +71,7 @@ namespace FRC_Playback.TBAUtils
             }
         }
 
-        public TBABrowser(Action<List<string>> callback, EventApi eventApi, DistrictApi districtApi)
+        public TBABrowser(Action<List<string>> callback, EventApi eventApi, DistrictApi districtApi, MatchApi matchApi)
         {
             InitializeComponent();
 
@@ -81,6 +81,7 @@ namespace FRC_Playback.TBAUtils
 
             eventAPIInstance = eventApi;
             districtAPIInstance = districtApi;
+            matchAPIInstance = matchApi;
 
             //////////////////////TBA Cache Reader//////////////////////
 
@@ -208,7 +209,8 @@ namespace FRC_Playback.TBAUtils
             var embed = "<html><head>" +
                         "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"/>" +
                         "</head><body>" +
-                        "<iframe width=\"368\" height=\"207\" src=\"{0}\"" +
+                        //"<iframe width=\"368\" height=\"207\" src=\"{0}\"" +
+                        "<iframe frameborder=\"0\" style=\"overflow: hidden; height: 90%; width: 90%; position: absolute;\" src=\"{0}\"" +
                         "frameborder = \"0\" allow = \"autoplay; encrypted-media\" allowfullscreen></iframe>" +
                         "</body></html>";
             var url = "https://www.youtube.com/embed/" + matchAPIInstance.GetMatch(match.matchKey).Videos[0].Key;
