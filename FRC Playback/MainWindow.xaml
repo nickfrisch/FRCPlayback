@@ -22,6 +22,7 @@
         <ProgressBar x:Name="VideoDownloadProgress" HorizontalAlignment="Left" Height="25" Margin="10,42,0,0" VerticalAlignment="Top" Width="120" Maximum="1"/>
         <Button x:Name="DownloadButton" Content="Download" HorizontalAlignment="Left" Margin="135,42,0,0" VerticalAlignment="Top" Height="25" Width="100" FontSize="14" Click="DownloadButton_Click"/>
         <Button x:Name="Settings" Content="Settings" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom"/>
-
+        <Button x:Name="ExactFrames" Content="Extract Frames" HorizontalAlignment="Left" Margin="240,42,0,0" VerticalAlignment="Top" Height="25" Width="131" FontSize="14" Click="ExactFrames_Click"/>
     </Grid>
+
 </Window>

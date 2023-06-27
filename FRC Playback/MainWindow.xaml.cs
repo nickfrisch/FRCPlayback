@@ -1,13 +1,17 @@
 using FRC_Playback.TBAUtils;
+using MediaToolkit.Model;
+using MediaToolkit.Options;
+using MediaToolkit;
 using System;
-using System.Text.RegularExpressions;
 using System.Windows;
 using TBAAPI.V3Client.Api;
 using TBAAPI.V3Client.Client;
-using TBAAPI.V3Client.Model;
 using YoutubeExplode;
 using YoutubeExplode.Videos.Streams;
+
 using Match = TBAAPI.V3Client.Model.Match;
+using Microsoft.Win32;
+using System.Windows.Forms;
 
 namespace FRC_Playback
 {
@@ -20,6 +24,8 @@ namespace FRC_Playback
         MatchApi matchAPIInstance;
         EventApi eventAPIInstance;
         DistrictApi districtAPIInstance;
+
+        string lastVideoPath = string.Empty;
 
         public MainWindow()
         {
@@ -41,13 +47,13 @@ namespace FRC_Playback
 
             var stream = await youtube.Videos.Streams.GetAsync(streamInfo);
 
-            string videoFullPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"FRCPlayback_video.{streamInfo.Container}");
+            lastVideoPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"FRCPlayback_video.{streamInfo.Container}");
 
             IProgress<double> progress = new Progress<double>(percent =>
             {
                 VideoDownloadProgress.Value = percent;
             });
-            await youtube.Videos.Streams.DownloadAsync(streamInfo, videoFullPath, progress);
+            await youtube.Videos.Streams.DownloadAsync(streamInfo, lastVideoPath, progress);
         }
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
@@ -65,6 +71,32 @@ namespace FRC_Playback
             Match match = matchAPIInstance.GetMatch(MatchKeyInput.Text);
 
             DownloadVideo(string.Format("https://www.youtube.com/watch?v={0}", match.Videos[0].Key));
+        }
+
+        private void ExactFrames_Click(object sender, RoutedEventArgs e)
+        {
+            using (var engine = new Engine())
+            {
+                var mp4 = new MediaFile { Filename = lastVideoPath };
+
+                engine.GetMetadata(mp4);
+
+                System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
+                dialog.ShowDialog();
+
+                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.Cancel)
+                    return;
+
+                var i = 0;
+                while (i < mp4.Metadata.Duration.TotalSeconds)
+                {
+                    var options = new ConversionOptions { Seek = TimeSpan.FromSeconds(i) };
+                    var outputFile = new MediaFile { Filename = string.Format("{0}\\image-{1}.jpeg", dialog.SelectedPath, i) };
+                    engine.GetThumbnail(mp4, outputFile, options);
+                    i++;
+                }
+            }
         }
     }
 }
