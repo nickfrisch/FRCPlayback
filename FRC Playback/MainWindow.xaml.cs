@@ -12,6 +12,7 @@ using YoutubeExplode.Videos.Streams;
 using Match = TBAAPI.V3Client.Model.Match;
 using Microsoft.Win32;
 using System.Windows.Forms;
+using System.IO.Packaging;
 
 namespace FRC_Playback
 {
@@ -25,7 +26,7 @@ namespace FRC_Playback
         EventApi eventAPIInstance;
         DistrictApi districtAPIInstance;
 
-        string lastVideoPath = string.Empty;
+        string lastVideoPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"FRCPlayback_video.mp4");
 
         public MainWindow()
         {
@@ -75,28 +76,7 @@ namespace FRC_Playback
 
         private void ExactFrames_Click(object sender, RoutedEventArgs e)
         {
-            using (var engine = new Engine())
-            {
-                var mp4 = new MediaFile { Filename = lastVideoPath };
-
-                engine.GetMetadata(mp4);
-
-                System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
-                dialog.ShowDialog();
-
-                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-                if (result == System.Windows.Forms.DialogResult.Cancel)
-                    return;
-
-                var i = 0;
-                while (i < mp4.Metadata.Duration.TotalSeconds)
-                {
-                    var options = new ConversionOptions { Seek = TimeSpan.FromSeconds(i) };
-                    var outputFile = new MediaFile { Filename = string.Format("{0}\\image-{1}.jpeg", dialog.SelectedPath, i) };
-                    engine.GetThumbnail(mp4, outputFile, options);
-                    i++;
-                }
-            }
+            (new ExtractFrameMenu(lastVideoPath)).Show();
         }
     }
 }
