@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:FRC_Playback"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="FRC_Playback.ExtractFrameMenu"
         mc:Ignorable="d"
-        Title="ExtractFrameMenu" Height="270" Width="362">
+        Title="ExtractFrameMenu" Height="286" Width="378">
     <Grid Margin="0,0,-24,-26">
         <TextBox x:Name="VideoDirectory" HorizontalAlignment="Left" Margin="10,29,0,0" VerticalAlignment="Top" Width="260" AutomationProperties.IsOffscreenBehavior="FromClip" ScrollViewer.CanContentScroll="True"/>
         <Button x:Name="BrowseVideoLocationButton" Content="Browse" HorizontalAlignment="Left" Margin="275,26,0,0" VerticalAlignment="Top" Height="28" Click="BrowseVideoLocationButton_Click"/>
