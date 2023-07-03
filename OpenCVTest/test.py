@@ -120,8 +120,10 @@ def example_one():
     un_warped = unwarp(image, np.float32(corners), destination)
 
     cropped = un_warped[int(destination[0][1]):int(destination[2][1]), int(destination[0][0]):int(destination[1][0])]
+    
 
-    f, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 5), facecolor='w', edgecolor='k')
+
+    f, (ax1, ax2) = plt.subplots(1,2, figsize=(15, 5), facecolor='w', edgecolor='k')
     # f.subplots_adjust(hspace=.2, wspace=.05)
 
     lowerRed = np.array((173, 52, 0), dtype = "uint8")
@@ -140,6 +142,20 @@ def example_one():
     src = ((x_rect, y_rect),(x_rect+w_rect,y_rect),(x_rect,y_rect+h_rect),(x_rect+w_rect,y_rect+h_rect))
 
     res = cv2.rectangle(res, (src[0][0], src[0][1]),(src[3][0],src[3][1]), (255,0,0), 2)
+
+    h, w = cropped.shape[:2]
+    center_crop = cropped[0:, int(w/2-100):int(w/2+100)]
+
+    cropped_greyscale = cv2.cvtColor(center_crop, cv2.COLOR_BGR2GRAY)
+    cropped_greyscale = cv2.GaussianBlur(src=cropped_greyscale, ksize=(5,5), sigmaX=0)
+
+    edges = cv2.Canny(cropped_greyscale, 150, 200, apertureSize=3)
+
+    lines = cv2.HoughLinesP(edges, 1, np.pi/180, 30, minLineLength=100, maxLineGap=20)
+    for x in range(0, len(lines)):
+        for x1,y1,x2,y2 in lines[x]:
+            if abs((y1-y2) / (x1-x2)) > 1:
+                cv2.line(cropped, (int(w/2-100) + x1, y1), (int(w/2-100) + x2, y2), (255, 0, 0), 3)
 
     ax1.imshow(un_warped)
     ax2.imshow(cropped)
