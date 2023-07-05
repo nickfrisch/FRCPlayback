@@ -93,7 +93,6 @@ def __filter_contours(input_contours, min_area, min_perimeter, min_width, max_wi
             if (h < min_height or h > max_height):
                 continue
             area = cv2.contourArea(contour)
-            print(area)
             if (area < min_area):
                 continue
             if (cv2.arcLength(contour, True) < min_perimeter):
@@ -141,7 +140,7 @@ def example_one():
     x_rect,y_rect,w_rect,h_rect = cv2.boundingRect(contours[0])
     src = ((x_rect, y_rect),(x_rect+w_rect,y_rect),(x_rect,y_rect+h_rect),(x_rect+w_rect,y_rect+h_rect))
 
-    res = cv2.rectangle(res, (src[0][0], src[0][1]),(src[3][0],src[3][1]), (255,0,0), 2)
+    res = cv2.rectangle(res, (src[0][0], src[0][1]),(src[3][0],src[3][1]), (0,0,255), 2)
 
     h, w = cropped.shape[:2]
     center_crop = cropped[0:, int(w/2-100):int(w/2+100)]
@@ -164,28 +163,45 @@ def example_one():
 
     f, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 8))
 
-    img = cv2.imread("images/2023-field.png")
+    field_img = cv2.imread("images/2023-field.png")
 
-    #size_of_original_x, size_of_original_y = image.shape[:2]
-    size_of_cropped_x, size_of_cropped_y = cropped.shape[:2]
-    size_of_field_x, size_of_field_y = img.shape[:2]
+    red_tr_corner = (350, 135) # these are constant
+    blue_bl_corner = (780,285) # these are constant
+    
+    real_red_tr_corner = (460,100) # these muist either be detected or manually selected
+    real_blue_bl_corner = (1245, 240) # these muist either be detected or manually selected
 
-    conversion_x = size_of_cropped_x / size_of_field_x
-    # conversion_y = size_of_cropped_y / size_of_field_y
+    real_x_difference = abs(real_red_tr_corner[0] - real_blue_bl_corner[0])
+    real_y_difference = abs(real_red_tr_corner[1] - real_blue_bl_corner[1])
 
-    # conversion_x = size_of_field_x / size_of_cropped_x
-    # conversion_y = size_of_field_y / size_of_cropped_y
+    field_x_difference = abs(red_tr_corner[0] - blue_bl_corner[0])
+    field_y_difference = abs(red_tr_corner[1] - blue_bl_corner[1])
 
-    # conversion_x = 1
-    conversion_y = 1
+    conversion_x = field_x_difference / real_x_difference 
+    conversion_y = field_y_difference / real_y_difference 
+    
+    print("Real difference X:" + str(real_x_difference) + " Y: " + str(real_y_difference))
+    print("Field difference X:" + str(field_x_difference) + " Y: " + str(field_y_difference))
 
-    x = [src[0][0] * conversion_x, src[2][0] * conversion_x, src[3][0] * conversion_x, src[1][0] * conversion_x, src[0][0] * conversion_x]
-    y = [src[0][1] * conversion_y, src[2][1] * conversion_y, src[3][1] * conversion_y, src[1][1] * conversion_y, src[0][1] * conversion_y]
+    x = [(src[0][0] - real_red_tr_corner[0]) * conversion_x + red_tr_corner[0], 
+         (src[2][0] - real_red_tr_corner[0]) * conversion_x + red_tr_corner[0], 
+         (src[3][0] - real_red_tr_corner[0]) * conversion_x + red_tr_corner[0], 
+         (src[1][0] - real_red_tr_corner[0]) * conversion_x + red_tr_corner[0], 
+         (src[0][0] - real_red_tr_corner[0]) * conversion_x + red_tr_corner[0]]
+    
+    y = [(src[0][1] - real_red_tr_corner[1]) * conversion_y + red_tr_corner[1], 
+         (src[2][1] - real_red_tr_corner[1]) * conversion_y + red_tr_corner[1], 
+         (src[3][1] - real_red_tr_corner[1]) * conversion_y + red_tr_corner[1], 
+         (src[1][1] - real_red_tr_corner[1]) * conversion_y + red_tr_corner[1], 
+         (src[0][1] - real_red_tr_corner[1]) * conversion_y + red_tr_corner[1]]
 
-    img = cv2.flip(img, 0)
-    #img = cv2.flip(img, 1)
+    for i in range(4):
+        print("Point " + str(i) + " X: " + str(x[i]) + ", Y: " + str(y[i]))
 
-    ax1.imshow(img)
+
+    field_img = cv2.flip(field_img, 0)
+
+    ax1.imshow(field_img)
     ax1.plot(x, y, color='red', linewidth=3)
     ax1.set_ylim([h*3, 0])
     ax1.set_xlim([0, w])
