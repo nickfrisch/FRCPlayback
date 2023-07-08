@@ -96,91 +96,84 @@ def __filter_contours(input_contours, min_area, min_perimeter, min_width, max_wi
         return output
 
 def example_one():
-    image = cv2.imread('images/match_pic2.png')
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    #C:/Users/Nick/GitRepos/FRCPlayback/
+    cap = cv2.VideoCapture('../FRC Playback/videos/FRCPlayback_video.mp4')
+    while(cap.isOpened()):
+        ret, frame = cap.read()
 
-    #corners = ((501, 666), (1414, 646), (291, 790), (1432, 793))
-    corners = ((373, 666), (1608, 640), (86, 777), (1727, 779))
-    destination, h, w = get_destination_points(corners)
-    un_warped = unwarp(image, np.float32(corners), destination)
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-    cropped = un_warped[int(destination[0][1]):int(destination[2][1]), int(destination[0][0]):int(destination[1][0])]
-    
+        #corners = ((501, 666), (1414, 646), (291, 790), (1432, 793))
+        corners = ((373, 666), (1608, 640), (86, 777), (1727, 779))
+        destination, h, w = get_destination_points(corners)
+        un_warped = unwarp(frame, np.float32(corners), destination)
 
+        cropped = un_warped[int(destination[0][1]):int(destination[2][1]), int(destination[0][0]):int(destination[1][0])]
 
-    # f, (ax1, ax2) = plt.subplots(1,2, figsize=(15, 5), facecolor='w', edgecolor='k')
-    # f.subplots_adjust(hspace=.2, wspace=.05)
+        lowerRed = np.array((173, 52, 0), dtype = "uint8")
+        upperRed = np.array((180, 255, 255), dtype = "uint8")
 
-    lowerRed = np.array((173, 52, 0), dtype = "uint8")
-    upperRed = np.array((180, 255, 255), dtype = "uint8")
+        #hsv = cv2.cvtColor(un_warped, cv2.COLOR_RGB2HSV)
+        hsv = cv2.cvtColor(cropped, cv2.COLOR_RGB2HSV)
 
-    #hsv = cv2.cvtColor(un_warped, cv2.COLOR_RGB2HSV)
-    hsv = cv2.cvtColor(cropped, cv2.COLOR_RGB2HSV)
+        mask = cv2.inRange(hsv,lowerRed, upperRed)
+        contours,hierarchy = cv2.findContours(mask, 1, 2)
+        contours = __filter_contours(contours, __filter_contours_min_area, __filter_contours_min_perimeter, __filter_contours_min_width, __filter_contours_max_width, __filter_contours_min_height, __filter_contours_max_height, __filter_contours_solidity, __filter_contours_max_vertices, __filter_contours_min_vertices, __filter_contours_min_ratio, __filter_contours_max_ratio)
+        #res = cv2.bitwise_and(image,image, mask= mask)
+        res = cv2.drawContours(cropped, contours, -1, (0, 255, 0), 5)
 
-    mask = cv2.inRange(hsv,lowerRed, upperRed)
-    contours,hierarchy = cv2.findContours(mask, 1, 2)
-    contours = __filter_contours(contours, __filter_contours_min_area, __filter_contours_min_perimeter, __filter_contours_min_width, __filter_contours_max_width, __filter_contours_min_height, __filter_contours_max_height, __filter_contours_solidity, __filter_contours_max_vertices, __filter_contours_min_vertices, __filter_contours_min_ratio, __filter_contours_max_ratio)
-    #res = cv2.bitwise_and(image,image, mask= mask)
-    res = cv2.drawContours(cropped, contours, -1, (0, 255, 0), 5)
+        if len(contours) > 0:
+            x_rect,y_rect,w_rect,h_rect = cv2.boundingRect(contours[0])
+            src = ((x_rect, y_rect),(x_rect+w_rect,y_rect),(x_rect,y_rect+h_rect),(x_rect+w_rect,y_rect+h_rect))
 
-    x_rect,y_rect,w_rect,h_rect = cv2.boundingRect(contours[0])
-    src = ((x_rect, y_rect),(x_rect+w_rect,y_rect),(x_rect,y_rect+h_rect),(x_rect+w_rect,y_rect+h_rect))
+            res = cv2.rectangle(res, (src[0][0], src[0][1]),(src[3][0],src[3][1]), (0,0,255), 2)
 
-    res = cv2.rectangle(res, (src[0][0], src[0][1]),(src[3][0],src[3][1]), (0,0,255), 2)
+            h, w = cropped.shape[:2]
+            center_crop = cropped[0:, int(w/2-100):int(w/2+100)]
 
-    h, w = cropped.shape[:2]
-    center_crop = cropped[0:, int(w/2-100):int(w/2+100)]
+            cropped_greyscale = cv2.cvtColor(center_crop, cv2.COLOR_BGR2GRAY)
+            cropped_greyscale = cv2.GaussianBlur(src=cropped_greyscale, ksize=(5,5), sigmaX=0)
 
-    cropped_greyscale = cv2.cvtColor(center_crop, cv2.COLOR_BGR2GRAY)
-    cropped_greyscale = cv2.GaussianBlur(src=cropped_greyscale, ksize=(5,5), sigmaX=0)
+            edges = cv2.Canny(cropped_greyscale, 150, 200, apertureSize=3)
 
-    edges = cv2.Canny(cropped_greyscale, 150, 200, apertureSize=3)
+            lines = cv2.HoughLinesP(edges, 1, np.pi/180, 30, minLineLength=100, maxLineGap=20)
+            for x in range(0, len(lines)):
+                for x1,y1,x2,y2 in lines[x]:
+                    if abs((y1-y2) / (x1-x2)) > 1:
+                        cv2.line(cropped, (int(w/2-100) + x1, y1), (int(w/2-100) + x2, y2), (255, 0, 0), 3)
 
-    lines = cv2.HoughLinesP(edges, 1, np.pi/180, 30, minLineLength=100, maxLineGap=20)
-    for x in range(0, len(lines)):
-        for x1,y1,x2,y2 in lines[x]:
-            if abs((y1-y2) / (x1-x2)) > 1:
-                cv2.line(cropped, (int(w/2-100) + x1, y1), (int(w/2-100) + x2, y2), (255, 0, 0), 3)
+            field_img = cv2.imread("images/2023-field.png")
 
-    # ax1.imshow(un_warped)
-    # ax2.imshow(cropped)
+            red_tr_corner = (350, 135) # these are constant
+            blue_bl_corner = (780,285) # these are constant
+            
+            real_red_tr_corner = (460,100) # these must either be detected or manually selected
+            real_blue_bl_corner = (1245, 240) # these must either be detected or manually selected
 
-    # plt.show()
+            real_x_difference = abs(real_red_tr_corner[0] - real_blue_bl_corner[0])
+            real_y_difference = abs(real_red_tr_corner[1] - real_blue_bl_corner[1])
 
-    f, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 8))
+            field_x_difference = abs(red_tr_corner[0] - blue_bl_corner[0])
+            field_y_difference = abs(red_tr_corner[1] - blue_bl_corner[1])
 
-    field_img = cv2.imread("images/2023-field.png")
+            conversion_x = field_x_difference / real_x_difference 
+            conversion_y = field_y_difference / real_y_difference 
 
-    red_tr_corner = (350, 135) # these are constant
-    blue_bl_corner = (780,285) # these are constant
-    
-    real_red_tr_corner = (460,100) # these must either be detected or manually selected
-    real_blue_bl_corner = (1245, 240) # these must either be detected or manually selected
+            center_x = ((src[0][0] - real_red_tr_corner[0]) * conversion_x + red_tr_corner[0] + (src[1][0] - real_red_tr_corner[0]) * conversion_x + red_tr_corner[0]) / 2
+            center_y = ((src[0][1] - real_red_tr_corner[1]) * conversion_y + red_tr_corner[1] + (src[2][1] - real_red_tr_corner[1]) * conversion_y + red_tr_corner[1]) / 2
 
-    real_x_difference = abs(real_red_tr_corner[0] - real_blue_bl_corner[0])
-    real_y_difference = abs(real_red_tr_corner[1] - real_blue_bl_corner[1])
+            x = [center_x - 20, center_x - 20, center_x + 20, center_x + 20, center_x - 20]
+            y = [center_y - 20, center_y + 20, center_y + 20, center_y - 20, center_y - 20]
 
-    field_x_difference = abs(red_tr_corner[0] - blue_bl_corner[0])
-    field_y_difference = abs(red_tr_corner[1] - blue_bl_corner[1])
+            field_img = cv2.flip(field_img, 0)
 
-    conversion_x = field_x_difference / real_x_difference 
-    conversion_y = field_y_difference / real_y_difference 
+        cv2.imshow('frame',un_warped)
 
-    center_x = ((src[0][0] - real_red_tr_corner[0]) * conversion_x + red_tr_corner[0] + (src[1][0] - real_red_tr_corner[0]) * conversion_x + red_tr_corner[0]) / 2
-    center_y = ((src[0][1] - real_red_tr_corner[1]) * conversion_y + red_tr_corner[1] + (src[2][1] - real_red_tr_corner[1]) * conversion_y + red_tr_corner[1]) / 2
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
-    x = [center_x - 20, center_x - 20, center_x + 20, center_x + 20, center_x - 20]
-    y = [center_y - 20, center_y + 20, center_y + 20, center_y - 20, center_y - 20]
-
-    field_img = cv2.flip(field_img, 0)
-
-    ax1.imshow(field_img)
-    ax1.plot(x, y, color='red', linewidth=3)
-    ax1.set_ylim([h*3, 0])
-    ax1.set_xlim([0, w])
-    ax2.imshow(cropped)
-
-    plt.show()
+    cap.release()
+    cv2.destroyAllWindows()
 
 if __name__ == '__main__':
     example_one()
