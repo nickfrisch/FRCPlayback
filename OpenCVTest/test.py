@@ -154,8 +154,8 @@ def example_one():
     red_tr_corner = (350, 135) # these are constant
     blue_bl_corner = (780,285) # these are constant
     
-    real_red_tr_corner = (460,100) # these muist either be detected or manually selected
-    real_blue_bl_corner = (1245, 240) # these muist either be detected or manually selected
+    real_red_tr_corner = (460,100) # these must either be detected or manually selected
+    real_blue_bl_corner = (1245, 240) # these must either be detected or manually selected
 
     real_x_difference = abs(real_red_tr_corner[0] - real_blue_bl_corner[0])
     real_y_difference = abs(real_red_tr_corner[1] - real_blue_bl_corner[1])
@@ -165,19 +165,12 @@ def example_one():
 
     conversion_x = field_x_difference / real_x_difference 
     conversion_y = field_y_difference / real_y_difference 
-    
-    print("Real difference X:" + str(real_x_difference) + " Y: " + str(real_y_difference))
-    print("Field difference X:" + str(field_x_difference) + " Y: " + str(field_y_difference))
 
     center_x = ((src[0][0] - real_red_tr_corner[0]) * conversion_x + red_tr_corner[0] + (src[1][0] - real_red_tr_corner[0]) * conversion_x + red_tr_corner[0]) / 2
     center_y = ((src[0][1] - real_red_tr_corner[1]) * conversion_y + red_tr_corner[1] + (src[2][1] - real_red_tr_corner[1]) * conversion_y + red_tr_corner[1]) / 2
 
     x = [center_x - 20, center_x - 20, center_x + 20, center_x + 20, center_x - 20]
     y = [center_y - 20, center_y + 20, center_y + 20, center_y - 20, center_y - 20]
-
-    for i in range(4):
-        print("Point " + str(i) + " X: " + str(x[i]) + ", Y: " + str(y[i]))
-
 
     field_img = cv2.flip(field_img, 0)
 
