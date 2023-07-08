@@ -42,25 +42,11 @@ def unwarp(img, src, dst):
     h, w = img.shape[:2]
     H, _ = cv2.findHomography(src, dst, method=cv2.RANSAC, ransacReprojThreshold=3.0)
     print('\nThe homography matrix is: \n', H)
-    un_warped = cv2.warpPerspective(img, H, (w, h), flags=cv2.INTER_LINEAR#|cv2.WARP_INVERSE_MAP
-                                    )
-    #warpTwoImages(img, H, w, h)
-
-    # plot
-
-    f, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 8))
-    # f.subplots_adjust(hspace=.2, wspace=.05)
-    ax1.imshow(img)
-    ax1.set_title('Original Image')
+    un_warped = cv2.warpPerspective(img, H, (w, h), flags=cv2.INTER_LINEAR)
 
     x = [src[0][0], src[2][0], src[3][0], src[1][0], src[0][0]]
     y = [src[0][1], src[2][1], src[3][1], src[1][1], src[0][1]]
 
-    ax2.imshow(img)
-    ax2.plot(x, y, color='yellow', linewidth=3)
-    ax2.set_ylim([h, 0])
-    ax2.set_xlim([0, w])
-    ax2.set_title('Target Area')
 
     plt.show()
     return un_warped
@@ -122,7 +108,7 @@ def example_one():
     
 
 
-    f, (ax1, ax2) = plt.subplots(1,2, figsize=(15, 5), facecolor='w', edgecolor='k')
+    # f, (ax1, ax2) = plt.subplots(1,2, figsize=(15, 5), facecolor='w', edgecolor='k')
     # f.subplots_adjust(hspace=.2, wspace=.05)
 
     lowerRed = np.array((173, 52, 0), dtype = "uint8")
@@ -156,10 +142,10 @@ def example_one():
             if abs((y1-y2) / (x1-x2)) > 1:
                 cv2.line(cropped, (int(w/2-100) + x1, y1), (int(w/2-100) + x2, y2), (255, 0, 0), 3)
 
-    ax1.imshow(un_warped)
-    ax2.imshow(cropped)
+    # ax1.imshow(un_warped)
+    # ax2.imshow(cropped)
 
-    plt.show()
+    # plt.show()
 
     f, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 8))
 
@@ -183,17 +169,11 @@ def example_one():
     print("Real difference X:" + str(real_x_difference) + " Y: " + str(real_y_difference))
     print("Field difference X:" + str(field_x_difference) + " Y: " + str(field_y_difference))
 
-    x = [(src[0][0] - real_red_tr_corner[0]) * conversion_x + red_tr_corner[0], 
-         (src[2][0] - real_red_tr_corner[0]) * conversion_x + red_tr_corner[0], 
-         (src[3][0] - real_red_tr_corner[0]) * conversion_x + red_tr_corner[0], 
-         (src[1][0] - real_red_tr_corner[0]) * conversion_x + red_tr_corner[0], 
-         (src[0][0] - real_red_tr_corner[0]) * conversion_x + red_tr_corner[0]]
-    
-    y = [(src[0][1] - real_red_tr_corner[1]) * conversion_y + red_tr_corner[1], 
-         (src[2][1] - real_red_tr_corner[1]) * conversion_y + red_tr_corner[1], 
-         (src[3][1] - real_red_tr_corner[1]) * conversion_y + red_tr_corner[1], 
-         (src[1][1] - real_red_tr_corner[1]) * conversion_y + red_tr_corner[1], 
-         (src[0][1] - real_red_tr_corner[1]) * conversion_y + red_tr_corner[1]]
+    center_x = ((src[0][0] - real_red_tr_corner[0]) * conversion_x + red_tr_corner[0] + (src[1][0] - real_red_tr_corner[0]) * conversion_x + red_tr_corner[0]) / 2
+    center_y = ((src[0][1] - real_red_tr_corner[1]) * conversion_y + red_tr_corner[1] + (src[2][1] - real_red_tr_corner[1]) * conversion_y + red_tr_corner[1]) / 2
+
+    x = [center_x - 20, center_x - 20, center_x + 20, center_x + 20, center_x - 20]
+    y = [center_y - 20, center_y + 20, center_y + 20, center_y - 20, center_y - 20]
 
     for i in range(4):
         print("Point " + str(i) + " X: " + str(x[i]) + ", Y: " + str(y[i]))
