@@ -2,19 +2,9 @@
 using MediaToolkit.Options;
 using MediaToolkit;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 
 namespace FRC_Playback
 {
@@ -31,11 +21,6 @@ namespace FRC_Playback
             InitializeComponent();
 
             VideoDirectory.Text = defaultPath;
-        }
-
-        private void extract(object sender, string videoDir, string saveDir, double interval)
-        {
-
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -65,12 +50,11 @@ namespace FRC_Playback
 
                     while (currentTime < mp4.Metadata.Duration.TotalSeconds)
                     {
-                        var options = new ConversionOptions { Seek = span };
-                        var outputFile = new MediaFile { Filename = string.Format("{0}\\image-{1}.jpeg", saveDir, idx) };
+                        var options = new ConversionOptions { Seek = TimeSpan.FromSeconds(currentTime) };
+                        var outputFile = new MediaFile { Filename = string.Format("{0}\\image-{1}-{2}.jpeg", saveDir, idx, DateTime.UtcNow.ToString("yyyy_MM_ddTHH_mm_ss_fffffffZ")) };
                         engine.GetThumbnail(mp4, outputFile, options);
 
                         worker.ReportProgress((int) ((currentTime / mp4.Metadata.Duration.TotalSeconds) * 100));
-                        MessageBox.Show("Report: " + (int)((currentTime / mp4.Metadata.Duration.TotalSeconds) * 100));
                         currentTime += span.TotalSeconds;
                         idx++;
                     }
