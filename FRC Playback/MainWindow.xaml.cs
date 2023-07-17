@@ -8,7 +8,6 @@ using TBAAPI.V3Client.Api;
 using TBAAPI.V3Client.Client;
 using YoutubeExplode;
 using YoutubeExplode.Videos.Streams;
-
 using Match = TBAAPI.V3Client.Model.Match;
 using Microsoft.Win32;
 using System.Windows.Forms;
@@ -77,6 +76,11 @@ namespace FRC_Playback
         private void ExactFrames_Click(object sender, RoutedEventArgs e)
         {
             (new ExtractFrameMenu(lastVideoPath)).Show();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            (new FieldUI()).Show();
         }
     }
 }

@@ -1,0 +1,30 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FRC_Playback"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="FRC_Playback.FieldUI"
+        mc:Ignorable="d"
+        Title="FieldUI" Height="450" Width="800">
+    <Grid>
+        <Canvas x:Name="Field" Margin="10,10,216,79" RenderTransformOrigin="0.5,0.5">
+            <Canvas.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="180"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Canvas.RenderTransform>
+            <Canvas.Background>
+                <ImageBrush ImageSource="/img/2023-field.png" Stretch="Fill" TileMode="None"/>
+            </Canvas.Background>
+        </Canvas>
+        <Button x:Name="HeatMap" Content="Heat Map" HorizontalAlignment="Left" Margin="10,364,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="121,368,0,0" VerticalAlignment="Top" Width="52" SelectionChanged="ComboBox_SelectionChanged" ItemStringFormat="x2, x3"/>
+        <Button Content="Show/Hide" HorizontalAlignment="Left" Margin="194,363,0,0" VerticalAlignment="Top"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="314,364,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

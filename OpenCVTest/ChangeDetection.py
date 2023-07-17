@@ -46,7 +46,13 @@ def filter_contours(input_contours, min_area, min_perimeter, min_width=0, max_wi
         output.append(contour)
     return output
 
-def motion_detection(stabilization=False):
+def classify_bounding_box(imgHSV, lowRed=(163, 66, 66), highRed=(180, 255, 255)):
+    mask = cv2.inRange(imgHSV, lowRed, highRed)
+    percent_valid_red = round(np.count_nonzero(mask) / np.size(mask) * 100, 1)
+
+    return percent_valid_red
+
+def motion_detection(stabilization=False, readTrajectoriesFromCache=False):
     frame_count = 0
     previous_frame = None
 
@@ -57,7 +63,12 @@ def motion_detection(stabilization=False):
     h = int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
     if stabilization:
-        transforms_smooth = VideoStabilization.preprocessing(vid, w, h, total_frame_count)
+        if not readTrajectoriesFromCache:
+            transforms_smooth = VideoStabilization.preprocessing(vid, w, h, total_frame_count)
+            VideoStabilization.save_stabilization_trajectories(transforms_smooth)
+        else:
+            transforms_smooth = VideoStabilization.read_stabilization_trajectories()
+
 
     for i in range(total_frame_count - 2):
         is_success, frame = vid.read()
@@ -69,10 +80,9 @@ def motion_detection(stabilization=False):
         else:
             frame = frame[330:520, 20:w-20]
 
+        frame_hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         prepared_frame = cv2.cvtColor(frame, code=cv2.COLOR_BGR2GRAY)
-        #prepared_frame = cv2.GaussianBlur(src=prepared_frame, ksize=(5,5), sigmaX=0)
         prepared_frame = cv2.blur(src=prepared_frame, ksize=(11,11))
-        #prepared_frame = frame
 
         if (previous_frame is None):
             previous_frame = prepared_frame
@@ -81,7 +91,7 @@ def motion_detection(stabilization=False):
         diff_frame = cv2.absdiff(src1=previous_frame, src2=prepared_frame)
         previous_frame = prepared_frame
 
-        kernel = np.ones((9, 9))
+        kernel = np.ones((13, 13))
         diff_frame = cv2.dilate(diff_frame, kernel, 1)
         #diff_frame = cv2.GaussianBlur(src=diff_frame, ksize=(7, 7), sigmaX=0)
 
@@ -89,12 +99,21 @@ def motion_detection(stabilization=False):
 
         contours, _ = cv2.findContours(image=thresh_frame, mode=cv2.RETR_EXTERNAL, method=cv2.CHAIN_APPROX_SIMPLE)
 
-        #contours = filter_contours(contours, 70, 10)
+        contours = filter_contours(contours, 150, 10)
         #cv2.drawContours(image=frame, contours=contours, contourIdx=-1, color=(0, 255, 0), thickness=2, lineType=cv2.LINE_AA)
 
         for c in contours:
-            rec = cv2.boundingRect(c)
-            cv2.rectangle(frame, rec, (0, 255, 0))
+            rec = cv2.boundingRect(c) # x, y, w, h
+            if rec[2] * rec[3] > 1000:
+                #cv2.imshow("test", cv2.inRange(frame_hsv, (173, 52, 0), (180, 255, 255)))
+                #cv2.waitKey(0)
+                percent = classify_bounding_box(frame_hsv[rec[1]:rec[1] + rec[3], rec[0]:rec[0] + rec[2]])
+                if percent > 5:
+                    cv2.rectangle(frame, rec, (0, 0, 255), thickness=2)
+                else:
+                    cv2.rectangle(frame, rec, (0, 255, 0), thickness=2)
+
+                cv2.putText(frame, str(percent), (rec[0], rec[1] - 10), cv2.FONT_HERSHEY_PLAIN, 0.9, (0, 255, 0), 2)
 
         cv2.imshow('Motion Detector', frame)
 
@@ -105,4 +124,4 @@ def motion_detection(stabilization=False):
         if cv2.waitKey(10) == 27:
             break
 
-motion_detection(stabilization=True)
+motion_detection(stabilization=True, readTrajectoriesFromCache=True)

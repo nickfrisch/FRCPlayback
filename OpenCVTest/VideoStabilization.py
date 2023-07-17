@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import json
 
 SMOOTHING_RADIUS = 100
 
@@ -47,12 +48,14 @@ def filter_contours(input_contours, min_area, min_perimeter, min_width=0, max_wi
         output.append(contour)
     return output
 
+
 def fixBorder(frame):
   s = frame.shape
   # Scale the image 4% without moving the center
   T = cv2.getRotationMatrix2D((s[1]/2, s[0]/2), 0, 1.04)
   frame = cv2.warpAffine(frame, T, (s[1], s[0]))
   return frame
+
 
 def movingAverage(curve, radius):
   window_size = 2 * radius + 1
@@ -131,6 +134,7 @@ def preprocessing(cap, w, h, total_frame_count):
     cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
     return transforms_smooth
 
+
 def get_current_frame(frame, frame_idx, transforms_smooth, w, h):
     frame = frame[310:540, 20:w-20]
 
@@ -149,3 +153,14 @@ def get_current_frame(frame, frame_idx, transforms_smooth, w, h):
     frame_stabilized = cv2.warpAffine(frame, m, (w, h))
 
     return fixBorder(frame_stabilized)[20:210, 0:]
+
+
+def save_stabilization_trajectories(transforms_smooth):
+    with open("cache_video_stabilization_trajectories.txt", 'w') as file:
+        json.dump(transforms_smooth.tolist(), file)
+
+
+def read_stabilization_trajectories():
+    with open("cache_video_stabilization_trajectories.txt", 'r') as file:
+        return np.array(json.load(file))
+
