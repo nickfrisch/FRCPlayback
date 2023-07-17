@@ -50,7 +50,7 @@ namespace FRC_Playback
 
                     while (currentTime < mp4.Metadata.Duration.TotalSeconds)
                     {
-                        var options = new ConversionOptions { Seek = span };
+                        var options = new ConversionOptions { Seek = TimeSpan.FromSeconds(currentTime) };
                         var outputFile = new MediaFile { Filename = string.Format("{0}\\image-{1}-{2}.jpeg", saveDir, idx, DateTime.UtcNow.ToString("yyyy_MM_ddTHH_mm_ss_fffffffZ")) };
                         engine.GetThumbnail(mp4, outputFile, options);
 
