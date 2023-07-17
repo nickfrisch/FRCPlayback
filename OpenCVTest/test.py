@@ -42,6 +42,13 @@ def unwarp(img, src, dst):
     h, w = img.shape[:2]
     H, _ = cv2.findHomography(src, dst, method=cv2.RANSAC, ransacReprojThreshold=3.0)
     print('\nThe homography matrix is: \n', H)
+
+    """
+        Problem with the Warp Perspective function is that unwarping the FRC image will make it huge and much larger than
+        needed so to fix the problem we need to find the area of intrest and crop everything else out. From there we can
+        add the warp image which prevents the image from growing way out of size. THen once it is warp then maybe recrop the image
+        for the processing. Otherwise we need a huge array to hold the image (5000, 5000, 3).
+    """
     un_warped = cv2.warpPerspective(img, H, (w, h), flags=cv2.INTER_LINEAR#|cv2.WARP_INVERSE_MAP
                                     )
     #warpTwoImages(img, H, w, h)
