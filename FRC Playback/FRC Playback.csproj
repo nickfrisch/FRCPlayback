@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net7.0-windows</TargetFramework>
@@ -8,7 +7,6 @@
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Json.Net" Version="1.0.33" />
     <PackageReference Include="JsonSubTypes" Version="2.0.1" />
@@ -16,13 +14,22 @@
     <PackageReference Include="MediaToolkit" Version="1.1.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="RestSharp" Version="105.1.0" />
+    <PackageReference Include="TorchSharp-cpu" Version="0.99.5" />
     <PackageReference Include="YoutubeExplode" Version="6.2.15" />
   </ItemGroup>
-
   <ItemGroup>
     <Reference Include="TBAAPI.V3Client">
       <HintPath>libs\TBAAPI.V3Client.dll</HintPath>
     </Reference>
   </ItemGroup>
-
+  <ItemGroup>
+    <None Update="img\2023-field.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup Label="MLModel">
+    <None Include="MLModel.mlnet">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
